@@ -1,5 +1,6 @@
 ﻿namespace tabuleiro
 {
+    //Tipo enumerado para definir a cor das peças
     enum Cor
     {
         Branca,

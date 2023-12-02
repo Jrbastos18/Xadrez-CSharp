@@ -5,7 +5,7 @@
         public Posicao posicao { get; set; }
         public Cor cor { get; protected set; } //O protected significa que o atributo será acessível pela própria classe e pelas subclasses
         public int qteMovimentos { get; set; }
-        public Tabuleiro tab { get; set; }
+        public Tabuleiro tab { get; set; } //Declarando a classe tabuleiro como propriedade da classe peça
 
         //Construtor usando o this para variaveis que iniciam com letra minuscula
         public Peca(Posicao posicao, Tabuleiro tab, Cor cor)
