@@ -19,5 +19,11 @@
             return pecas[linha, coluna];
         }
 
+        public void colocarPeca(Peca p, Posicao pos) //Método para incluir peças no tabuleiro
+        {
+            pecas[pos.linha, pos.coluna] = p; //Matriz de peças na posição pos.linha por pos.coluna
+            p.posicao = pos; //A peça.posição vai receber a pos.
+        }
+
     }
 }
