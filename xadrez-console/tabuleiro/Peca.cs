@@ -16,6 +16,9 @@
             this.qteMovimentos = 0;//Instanciando que a peça inicia com 0 e não precisa estar na sobrecarga
         }
 
-
+        public void incrementarQteMovimentos() //Método para incrementar a contagem da quantidade de movimentos da peça
+        {
+            qteMovimentos++;
+        }
     }
 }
