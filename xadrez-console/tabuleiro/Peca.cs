@@ -1,6 +1,6 @@
 ﻿namespace tabuleiro
 {
-    internal class Peca
+    abstract class Peca //A classe tem que ser abstrata pois tem pelo menos um método abstrato
     {
         public Posicao posicao { get; set; }
         public Cor cor { get; protected set; } //O protected significa que o atributo será acessível pela própria classe e pelas subclasses
@@ -20,5 +20,10 @@
         {
             qteMovimentos++;
         }
+
+        public abstract bool[,] movimentosPossiveis(); //Método abstrato de matriz booleana para retornar valores verdadeiros para movimentos possiveis e falso onde não for
+        //Esse método acima não será utilizado na superclasse Peca, apenas nas subclasses herdadas da superclasse, pois a regra de movimentos depende de cada peça específica
+
+        
     }
 }

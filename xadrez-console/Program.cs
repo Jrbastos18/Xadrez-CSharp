@@ -19,6 +19,14 @@ namespace xadrez_console
                     Console.WriteLine();
                     Console.Write("Origem: ");
                     Posicao origem = Tela.lerPosicaoXadrez().toPosicao(); //Instanciando o método para ler do teclado a posição de origme do xadrez e transformar para posição de matriz
+
+                    bool[,] possicoesPossiveis = partida.tab.peca(origem).movimentosPossiveis(); //Instanciando uma matriz booleana recbendo a partida com o tabuleiro dela, a peça na posição de origem e seus movimentos possíveis 
+
+
+                    Console.Clear(); //Limpa a tela
+                    Tela.ImprimirTabuleiro(partida.tab, possicoesPossiveis); //Imprime tabuleiro com sobrecarga matriz booleana de possições possíveis
+
+                    Console.WriteLine();
                     Console.Write("Destino: ");
                     Posicao destino = Tela.lerPosicaoXadrez().toPosicao(); //Instanciando o método para ler do teclado a posição de destino do xadrez e transformar para posição de matriz
                     

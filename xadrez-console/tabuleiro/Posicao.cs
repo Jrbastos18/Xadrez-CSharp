@@ -12,6 +12,12 @@
             this.coluna = coluna;
         }
 
+        public void definirValores(int linha, int coluna) //Método para definir valores da posição
+        {
+            this.linha = linha;
+            this.coluna = coluna;
+        }
+
         //método override ToString para transformar as propriedades da classe em string para imprimir na tela
         public override string ToString() 
         {
