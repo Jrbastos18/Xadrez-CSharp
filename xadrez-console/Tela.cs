@@ -10,6 +10,7 @@ namespace xadrez_console
             //Estrutura de repetição dupla com i e j, representando a linha e coluna respectivamente
             for (int i = 0; i < tab.linhas; i++)
             {
+                Console.Write(8 - i + " "); //Imprimindo da tela cada linha do tabuleiro de forma decrescente
                 for (int j = 0; j < tab.colunas; j++)
                 {
                     //Estrutura condicional para verificar se a posição da matriz é nula ou contém uma peça
@@ -19,10 +20,28 @@ namespace xadrez_console
                     }
                     else
                     {
-                        Console.Write(tab.peca(i, j) + " ");
+                        imprimirPeca(tab.peca(i, j));
+                        Console.Write(" ");
                     }
                 }
                 Console.WriteLine();
+            }
+
+            Console.WriteLine("  a b c d e f g h");
+        }
+
+        public static void imprimirPeca(Peca peca) //Método para mudar cor da peça
+        {
+            if (peca.cor == Cor.Branca) //Caso seja branca, continuará normal
+            {
+                Console.Write(peca);
+            }
+            else //Caso seja preta, ela mudará para a cor amarela
+            {
+                ConsoleColor aux = Console.ForegroundColor; //Criando uma variável auxiliar para receber a cor original do console (branca)
+                Console.ForegroundColor = ConsoleColor.Yellow; //Definindo a cor dor primeiro plano (string) do console para amarelo
+                Console.Write(peca); //Imprimindo a peça na cor amarela
+                Console.ForegroundColor = aux; //Voltando a cor original branca para o primeiro plano (string)
             }
         }
 
