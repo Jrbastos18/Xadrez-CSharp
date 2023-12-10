@@ -2,18 +2,18 @@
 
 namespace xadrez
 {
-    //Criando a peça Torre do xadrez herdando a superclasse Peca
-    class Torre : Peca
+    //Criando a peça Bispo do xadrez herdando a superclasse Peca
+    class Bispo : Peca
     {
         //Construtor
-        public Torre(Tabuleiro tab, Cor cor) : base(tab, cor)
+        public Bispo(Tabuleiro tab, Cor cor) : base(tab, cor)
         {
         }
 
         //Métodos
         public override string ToString() //Método para converter classe em string
         {
-            return "T";
+            return "B";
         }
 
         private bool podeMover(Posicao pos) //Método auxiliar para verificar se a peça poderá se movimentar
@@ -28,8 +28,8 @@ namespace xadrez
 
             Posicao pos = new Posicao(0, 0); //Definindo uma posição aleatória
 
-            //Posição Acima 
-            pos.definirValores(posicao.linha - 1, posicao.coluna); //Instanciando o método definirValores da classe Posicao para definir movimento possível
+            //Posição Noroeste
+            pos.definirValores(posicao.linha - 1, posicao.coluna - 1); //Instanciando o método definirValores da classe Posicao para definir movimento possível
             while (tab.posicaoValida(pos) && podeMover(pos)) //Estrutura de repetição para marcar a posição enquanto o estiver casa livre ou peça adversária
             {
                 mat[pos.linha, pos.coluna] = true; //Caso as condições sejam verdadeiras, irá definir que a matriz booleana na posição a ser movida é verdadeira e pode ser movida para ela
@@ -37,11 +37,11 @@ namespace xadrez
                 {
                     break;
                 }
-                pos.definirValores(pos.linha - 1, pos.coluna); //Caso não passe na condição, vai verificando a próxima posição
+                pos.definirValores(pos.linha - 1, pos.coluna - 1); //Caso não passe na condição, vai verificando a próxima posição
             }
 
-            //Posição Abaixo
-            pos.definirValores(posicao.linha + 1, posicao.coluna);
+            //Posição Nordeste
+            pos.definirValores(posicao.linha - 1, posicao.coluna + 1);
             while (tab.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
@@ -49,11 +49,11 @@ namespace xadrez
                 {
                     break;
                 }
-                pos.definirValores(pos.linha + 1, pos.coluna);
+                pos.definirValores(pos.linha - 1, pos.coluna + 1);
             }
 
-            //Posição Direita
-            pos.definirValores(posicao.linha, posicao.coluna + 1);
+            //Posição Sudeste
+            pos.definirValores(posicao.linha + 1, posicao.coluna + 1);
             while (tab.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
@@ -61,11 +61,11 @@ namespace xadrez
                 {
                     break;
                 }
-                pos.definirValores(pos.linha, pos.coluna + 1); ;
+                pos.definirValores(pos.linha + 1, pos.coluna + 1);
             }
 
-            //Posição Esquerda
-            pos.definirValores(posicao.linha, posicao.coluna - 1);
+            //Posição Sudoeste
+            pos.definirValores(posicao.linha + 1, posicao.coluna - 1);
             while (tab.posicaoValida(pos) && podeMover(pos))
             {
                 mat[pos.linha, pos.coluna] = true;
@@ -73,10 +73,10 @@ namespace xadrez
                 {
                     break;
                 }
-                pos.definirValores(pos.linha, pos.coluna - 1);
+                pos.definirValores(pos.linha + 1, pos.coluna - 1);
             }
-
             return mat; //Retornando a matriz booleana
         }
+
     }
 }
