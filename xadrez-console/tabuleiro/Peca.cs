@@ -42,7 +42,7 @@
             return false; //Caso saia da estrutura de repetição e não retorne nenhum verdadeiro, o método retornará false
         }
 
-        public bool podeMoverPara(Posicao pos) //Método para saber se a peça pode mover para uma dada posição
+        public bool movimentoPossivel(Posicao pos) //Método para saber se a peça pode mover para uma dada posição
         {
             return movimentosPossiveis()[pos.linha, pos.coluna]; //retorna os movimentos possíveis, testando se a a matriz na linha e coluna é verdadeiro
         }
