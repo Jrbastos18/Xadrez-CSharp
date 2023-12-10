@@ -1,11 +1,45 @@
-﻿using tabuleiro;
+﻿using System.Collections.Generic;
+using tabuleiro;
 using xadrez;
-
 
 namespace xadrez_console
 {
     class Tela
     {
+        public static void imprimirPartida(PartidaDeXadrez partida) //Método para imprimir na tela a partida
+        {
+            ImprimirTabuleiro(partida.tab); //Imprime tabuleiro
+            Console.WriteLine();
+            imprimirPecasCapturadas(partida); //Imprime as peças capturadas
+            Console.WriteLine();
+            Console.WriteLine("Turno: " + partida.turno);
+            Console.WriteLine("Aguardando jogada: " + partida.jogadorAtual);
+        }
+
+        public static void imprimirPecasCapturadas(PartidaDeXadrez partida) //Método para imprimir conjunto de peças capturas
+        {
+            Console.WriteLine("Peças capturadas: ");
+            Console.Write("Brancas: ");
+            imprimirConjunto(partida.pecasCapturadas(Cor.Branca));
+            Console.WriteLine();
+            Console.Write("Pretas: ");
+            ConsoleColor aux = Console.ForegroundColor; //Cria uma propriedade de cor auxiliar recebendo a cor padrão
+            Console.ForegroundColor = ConsoleColor.Yellow; //Muda a cor do foreground (texto) para a cor amarela
+            imprimirConjunto(partida.pecasCapturadas(Cor.Preta));
+            Console.ForegroundColor = aux; //Volta a cor da letra para a cor padrão que está na auxiliar
+            Console.WriteLine();
+        }
+
+        public static void imprimirConjunto(HashSet<Peca> conjunto) //Método para o imprimir o conjunto
+        {
+            Console.Write("[");
+            foreach (Peca x in conjunto) //Para cada peça c no conjunto, imprime a peça
+            {
+                Console.Write(x + " ");
+            }
+            Console.Write("]");
+        }
+
         //Método para imprimir o tabuleiro
         public static void ImprimirTabuleiro(Tabuleiro tab)
         {
