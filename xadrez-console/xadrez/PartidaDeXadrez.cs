@@ -56,7 +56,7 @@ namespace xadrez
         public void realizaJogada(Posicao origem, Posicao destino) //Método para relizar jogada
         {
             Peca pecaCapturada = executaMovimento(origem, destino); //Instanciando a pecaCapturada recebendo o executaMovimento
-            if(estaEmXeque(jogadorAtual)) //Verifica se o jogador atual está em xeque, então desfaz a jogada, pois o próprio jogador não pode se colocar em xeque
+            if (estaEmXeque(jogadorAtual)) //Verifica se o jogador atual está em xeque, então desfaz a jogada, pois o próprio jogador não pode se colocar em xeque
             {
                 desfazMovimento(origem, destino, pecaCapturada); //Instanciando o método para desfazer o movimento anterior que se colocou em xeque
                 throw new TabuleiroException("Você não pode se colocar em xeque!");
@@ -71,8 +71,15 @@ namespace xadrez
                 xeque = false; //Senão recebe false
             }
 
-            turno++;
-            mudaJogador();
+            if (testeXequemate(adversaria(jogadorAtual))) //Se o teste de xeque-mate do adversário do jogador atual for verdadeiro
+            {
+                terminada = true; //A propriedade terminada recebe true e acaba o jogo
+            }
+            else //Caso não dê false, incrementa o tunro e muda de jogador
+            {
+                turno++;
+                mudaJogador();
+            }
 
         }
 
@@ -139,7 +146,7 @@ namespace xadrez
             aux.ExceptWith(pecasCapturadas(cor)); //Conjunto auxiliar recebe as peças exceto (retirar) as peças que estão no método peças capturadas 
             return aux; //Retorna o conjunto auxiliar de peças em jogo
         }
-                
+
         private Cor adversaria(Cor cor) //Método privado para a própria classe para saber quem é a cor adversária de uma cor dada (branca ou preta)
         {
             if (cor == Cor.Branca)
@@ -183,6 +190,38 @@ namespace xadrez
             return false; //Caso não está em xeque, retorna false
         }
 
+        public bool testeXequemate(Cor cor) //Método para verificar se o rei de uma dada cor está em xeque-mate
+        {
+            if (!estaEmXeque(cor))
+            {
+                return false;
+            }
+            foreach (Peca x in pecasEmJogo(cor)) //Para cada peça x em peças em jogo de uma dada cor
+            {
+                bool[,] mat = x.movimentosPossiveis(); //A matriz booleana de movimentos possiveis dessa peça x
+                for (int i = 0; i < tab.linhas; i++) //Varrendo a matriz
+                {
+                    for (int j = 0; j < tab.colunas; j++)
+                    {
+                        if (mat[i, j]) //Se a matriz booleana na posição i-j for verdadeiro, é uma posição possivel para essa peça x
+                        {
+                            Posicao origem = x.posicao; //Define a posição da peça atual na origem
+                            Posicao destino = new Posicao(i, j); //Instanciando a posição destino na posição i-j
+                            Peca pecaCapturada = executaMovimento(origem, destino); //Peça realizada executa movimento dessa peça na posição atual para a nova posição i-j
+                            bool testeXeque = estaEmXeque(cor); //Testa se ainda está em xeque
+                            desfazMovimento(origem, destino, pecaCapturada); //Desfaz movimento
+                            if (!testeXeque) //Se não está mais em xeque, existe um movimento que tira do xeque
+                            {
+                                return false; //Retorna false
+                            }
+                        }
+                    }
+                }
+            }
+            return true; //Se fez todos os testes acima e não deu false, então retorna true e define que deu xeque-mate
+
+        }
+
         public void colocarNovaPeca(char coluna, int linha, Peca peca) //Método auxiliar para colocar novas peças no tabuleiro
         {
             tab.colocarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao()); //Dado uma coluna e uma linha, coloca no tabuleiro essa peça numa nova posição xadrez
@@ -194,19 +233,13 @@ namespace xadrez
             //Chamando o método auxiliar de ColocarNovaPeça para inserir a peça no tabuleiro
             //Peças brancas
             colocarNovaPeca('c', 1, new Torre(tab, Cor.Branca));
-            colocarNovaPeca('c', 2, new Torre(tab, Cor.Branca));
-            colocarNovaPeca('d', 2, new Torre(tab, Cor.Branca));
-            colocarNovaPeca('e', 2, new Torre(tab, Cor.Branca));
-            colocarNovaPeca('e', 1, new Torre(tab, Cor.Branca));
             colocarNovaPeca('d', 1, new Rei(tab, Cor.Branca));
+            colocarNovaPeca('h', 7, new Torre(tab, Cor.Branca));
+
 
             //Peças pretas
-            colocarNovaPeca('c', 7, new Torre(tab, Cor.Preta));
-            colocarNovaPeca('c', 8, new Torre(tab, Cor.Preta));
-            colocarNovaPeca('d', 7, new Torre(tab, Cor.Preta));
-            colocarNovaPeca('e', 7, new Torre(tab, Cor.Preta));
-            colocarNovaPeca('e', 8, new Torre(tab, Cor.Preta));
-            colocarNovaPeca('d', 8, new Rei(tab, Cor.Preta));
+            colocarNovaPeca('a', 8, new Rei(tab, Cor.Preta));
+            colocarNovaPeca('b', 8, new Torre(tab, Cor.Preta));
 
         }
     }
