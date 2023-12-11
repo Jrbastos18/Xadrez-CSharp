@@ -5,8 +5,11 @@ namespace xadrez
     //Criando a peça Peão do xadrez herdando a superclasse Peca
     class Peao : Peca
     {
-        public Peao(Tabuleiro tab, Cor cor) : base(tab, cor)
+        private PartidaDeXadrez partida; //Como tem jogada especial, o peão precisa saber a partida
+
+        public Peao(Tabuleiro tab, Cor cor, PartidaDeXadrez partida) : base(tab, cor)
         {
+            this.partida = partida;
         }
 
         //Métodos
@@ -54,6 +57,23 @@ namespace xadrez
                 {
                     mat[pos.linha, pos.coluna] = true;
                 }
+
+                // #JogadaEspecial En Passant
+                if(posicao.linha == 3) //Se o peão branco estiver na linha 3 (única linha que o peão branco pode dar um En Passant)
+                {
+                    Posicao esquerda = new Posicao(posicao.linha, posicao.coluna - 1); //Posição esquerda do peão branco
+                    if (tab.posicaoValida(esquerda) && existeInimigo(esquerda) && tab.peca(esquerda) == partida.vulneravelEnPassant) //Caso a posição da esquerda é uma posição válida, se tem um inimigo nela e a peça da esquerda é o peão que está vulnerável
+                    {
+                        mat[esquerda.linha - 1, esquerda.coluna] = true; //Posição da esquerda recebe true para possível movimento do peão
+                    }
+
+                    Posicao direita = new Posicao(posicao.linha, posicao.coluna + 1); //Posição direita do peão branco
+                    if (tab.posicaoValida(direita) && existeInimigo(direita) && tab.peca(direita) == partida.vulneravelEnPassant) //Caso a posição da direita é uma posição válida, se tem um inimigo nela e a peça da esquerda é o peão que está vulnerável
+                    {
+                        mat[direita.linha - 1, direita.coluna] = true; //Posição da direita recebe true para possível movimento do peão
+                    }
+                }
+
             }
             else //Se a cor for preta o peão apenas verifica para baixo
             {
@@ -76,6 +96,22 @@ namespace xadrez
                 if (tab.posicaoValida(pos) && existeInimigo(pos))
                 {
                     mat[pos.linha, pos.coluna] = true;
+                }
+
+                // #JogadaEspecial En Passant
+                if (posicao.linha == 4) //Se o peão preto estiver na linha 4 (única linha que o peão branco pode dar um En Passant)
+                {
+                    Posicao esquerda = new Posicao(posicao.linha, posicao.coluna - 1); //Posição esquerda do peão preto
+                    if (tab.posicaoValida(esquerda) && existeInimigo(esquerda) && tab.peca(esquerda) == partida.vulneravelEnPassant) //Caso a posição da esquerda é uma posição válida, se tem um inimigo nela e a peça da esquerda é o peão que está vulnerável
+                    {
+                        mat[esquerda.linha + 1, esquerda.coluna] = true; //Posição da esquerda recebe true para possível movimento do peão
+                    }
+
+                    Posicao direita = new Posicao(posicao.linha, posicao.coluna + 1); //Posição direita do peão preto
+                    if (tab.posicaoValida(direita) && existeInimigo(direita) && tab.peca(direita) == partida.vulneravelEnPassant) //Caso a posição da direita é uma posição válida, se tem um inimigo nela e a peça da esquerda é o peão que está vulnerável
+                    {
+                        mat[direita.linha + 1, direita.coluna] = true; //Posição da direita recebe true para possível movimento do peão
+                    }
                 }
             }
 
