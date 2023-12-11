@@ -62,7 +62,7 @@ namespace xadrez
             }
 
             // #JogadaEspecial En Passant
-            if(p is Peao) //Caso a peça seja um peão, então
+            if (p is Peao) //Caso a peça seja um peão, então
             {
                 if (origem.coluna != destino.coluna && pecaCapturada == null) //Se a coluna da posição de origem for diferente da coluna da posição de destino (Significa que ele mexeu na diagonal, movimento de captura) e peça capturada é nulo
                 { //Signfica que foi uma jogada En Passant e terá que capturar a peça na mão
@@ -95,33 +95,33 @@ namespace xadrez
             tab.colocarPeca(p, origem); //Pega a peça e coloca de volta na posição de origem, desfazendo o movimento
 
             // #JogadaEspecial Desfazendo Roque Pequeno
-            if (p is Rei && destino.coluna == origem.coluna + 2) 
+            if (p is Rei && destino.coluna == origem.coluna + 2)
             {
-                Posicao origemT = new Posicao(origem.linha, origem.coluna + 3); 
-                Posicao destinoT = new Posicao(origem.linha, origem.coluna + 1); 
-                Peca T = tab.retirarPeca(destinoT); 
-                T.decrementarQteMovimentos(); 
-                tab.colocarPeca(T, origemT); 
+                Posicao origemT = new Posicao(origem.linha, origem.coluna + 3);
+                Posicao destinoT = new Posicao(origem.linha, origem.coluna + 1);
+                Peca T = tab.retirarPeca(destinoT);
+                T.decrementarQteMovimentos();
+                tab.colocarPeca(T, origemT);
             }
 
             // #JogadaEspecial Desfaendo Roque Grande
-            if (p is Rei && destino.coluna == origem.coluna - 2) 
+            if (p is Rei && destino.coluna == origem.coluna - 2)
             {
-                Posicao origemT = new Posicao(origem.linha, origem.coluna - 4); 
-                Posicao destinoT = new Posicao(origem.linha, origem.coluna - 1); 
-                Peca T = tab.retirarPeca(destinoT); 
-                T.decrementarQteMovimentos(); 
-                tab.colocarPeca(T, origemT); 
+                Posicao origemT = new Posicao(origem.linha, origem.coluna - 4);
+                Posicao destinoT = new Posicao(origem.linha, origem.coluna - 1);
+                Peca T = tab.retirarPeca(destinoT);
+                T.decrementarQteMovimentos();
+                tab.colocarPeca(T, origemT);
             }
 
             // #JogadaEspecial En Passant
-            if( p is Peao) //Caso a peça seja um peão, verifica
+            if (p is Peao) //Caso a peça seja um peão, verifica
             {
-                if(origem.coluna != destino.coluna && pecaCapturada == vulneravelEnPassant) //Se a coluna de origem for diferente da coluna de destino e a peça capturada for vulnerável ao En Passant
+                if (origem.coluna != destino.coluna && pecaCapturada == vulneravelEnPassant) //Se a coluna de origem for diferente da coluna de destino e a peça capturada for vulnerável ao En Passant
                 { //Signifca que ocorreu uma jogada En Passant e tem que fazer uma correção, a peça capturada não tem que voltar para a posição de destino
                     Peca peao = tab.retirarPeca(destino); //Criando variável peça peao auxiliar para retirar a peça do destino que tinha voltado para a posição errada
                     Posicao posP; //Cria uma posição do Peão
-                    if(p.cor == Cor.Branca) //Caso a cor do peão for branca
+                    if (p.cor == Cor.Branca) //Caso a cor do peão for branca
                     {
                         posP = new Posicao(3, destino.coluna); //A peça vai para a posição da linha 3 e mesma coluna de destino
                     }
@@ -144,6 +144,22 @@ namespace xadrez
                 throw new TabuleiroException("Você não pode se colocar em xeque!");
             }
 
+            Peca p = tab.peca(destino);
+
+            // #JogadaEspecial Promocao
+            if (p is Peao) //Se a peça que foi movida é um peão
+            {
+                //Se for um peão branco que chegou na linha 0 ou um peão preto que chegou na linha 7
+                if ((p.cor == Cor.Branca && destino.linha == 0) || (p.cor == Cor.Preta && destino.linha == 7)) 
+                {
+                    p = tab.retirarPeca(destino); //A peça peão é retirada do destino
+                    pecas.Remove(p); //Remove a peça peão do conjunto de peças da partida
+                    Peca dama = new Dama(tab, p.cor); //Cria e adiciona uma nova dama no tabuleiro da mesma cor do peão
+                    tab.colocarPeca(dama, destino); //Coloca a dama na mesma posição de destino do peão que foi retirado
+                    pecas.Add(dama); //Adiciona a dama no conjunto de peças da partida
+                }
+            }
+
             if (estaEmXeque(adversaria(jogadorAtual))) //Se está em cheque o adversário do jogador atual
             {
                 xeque = true; //Xeque recebe true
@@ -163,10 +179,10 @@ namespace xadrez
                 mudaJogador();
             }
 
-            Peca p = tab.peca(destino);
+
 
             // #JogadaEspecial En Passant
-            if ( p is Peao && (destino.linha == origem.linha - 2 || destino.linha == origem.linha + 2)) //Se a peça é um Peão e andou duas linhas a mais ou a menos (que andou a primeira vez)
+            if (p is Peao && (destino.linha == origem.linha - 2 || destino.linha == origem.linha + 2)) //Se a peça é um Peão e andou duas linhas a mais ou a menos (que andou a primeira vez)
             {
                 vulneravelEnPassant = p; //Caso a condição seja verdadeira, quer dizer que essa peça está vulnerável a tomar um En Passant no próximo turno
             }
